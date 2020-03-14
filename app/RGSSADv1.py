@@ -2,16 +2,9 @@ import os, sys
 
 from app import RGSSAD
 
-class EncryptedData:
-    def __init__(self, name, byteOffset, length, key):
-        self.name = name
-        self.offset = byteOffset
-        self.size = length
-        self.key = key
-
 class RGSSADv1(RGSSAD.Base):
     def read(self):
-        print("Archive size "+hex(self.Size))
+        print("Reading v1 or v2 file with size of "+hex(self.Size))
         self.Archive.seek(8, 0)
     
         while True:
@@ -20,7 +13,7 @@ class RGSSADv1(RGSSAD.Base):
             filename = self.DecryptName(self.Archive.read(length))
             size = self.DecryptNumber(self.Archive.read(4))
             offset = self.Archive.tell()
-            File = EncryptedData(filename, offset, size, self.key)
+            File = RGSSAD.EncryptedData(filename, offset, size, self.key)
             self.ArchivedData.append(File)
             self.Archive.seek(size, 1)
             print("file name "+filename)
@@ -28,7 +21,7 @@ class RGSSADv1(RGSSAD.Base):
             print("offset "+hex(offset))
             print("new key "+hex(self.key))
             print("we're at"+hex(self.Archive.tell()))
-            if self.Archive.tell() == self.Size:
+            if self.Archive.tell() == self.Size-1:
                 break
         print("holy shit, we made it.")
 

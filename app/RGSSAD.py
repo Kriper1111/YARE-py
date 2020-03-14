@@ -5,6 +5,13 @@ import os
 def shorten(number):
     return number & 0xFFFFFFFF
 
+class EncryptedData:
+    def __init__(self, name, byteOffset, length, key):
+        self.name = name
+        self.offset = byteOffset
+        self.size = length
+        self.key = key
+
 
 class Base:
     def __init__(self, fileName, size):
