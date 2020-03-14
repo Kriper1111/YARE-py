@@ -57,16 +57,16 @@ class Base:
                 bKey = Tkey.to_bytes(4, "little")
                 decrypted.append(byte ^ bKey[j])
                 j += 1
-            if platform.system() == "Linux":
-                File.name.replace("\\", "/")
-            filename = os.path.join(path, File.name)
             OSpath = path
+            if platform.system() == "Linux":
+                File.name = File.name.replace("\\", "/")
+                folder = '/'.join(File.name.split('/')[:-1])
+            filename = os.path.join(path, File.name)
             if platform.system() == "Windows":
                 folder = '\\'.join(File.name.split('\\')[:-1])
-                OSpath = os.path.join(path, folder)
-                print(OSpath)
+            OSpath = os.path.join(path, folder)
 
-            print("Decrypted all the bytes, storing them into {}".format(path))
+            print("Decrypted all the bytes, storing them into {}".format(OSpath))
             os.makedirs(OSpath, exist_ok=True)
             output = open(filename, "wb")
             output.write(bytearray(decrypted))
