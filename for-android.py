@@ -3,12 +3,6 @@
 import os, sys
 import app
 
-# we list every *.rgssad, *.rgss2a and *.rgss3a
-# user picks the file using input()
-# we analyze the file
-# and send it through respective class
-# and work from there
-
 def main():
     cwd = os.path.dirname(__file__)
     
@@ -26,7 +20,7 @@ def main():
     if not FileList:
         raise IOError("No RGSSAD files found")
     
-    ChosenOne = input("Please choose the file from the list above or ESC to exit")
+    ChosenOne = input("Please choose the file from the list above or ESC to exit\r\n")
     if not ChosenOne:
         raise ValueError("I asked you nicely to choose the file")
     if ChosenOne == "ESC":
@@ -44,8 +38,10 @@ def main():
     RGSSAD = create(ChosenOne)
     print("Chosen One, you overcame may trials, now you may become analyzed")
     
+    verbose = input("Should I go verbose? (Y/n)\r\n")
+    
     path = "Extracted"
-    question = input("One more thing: can I get the folder for extracting? Default is 'Extracted' in this folder. (Y/n)")
+    question = input("One more thing: can I get the folder for extracting? Default is 'Extracted' in this folder. (Y/n)\r\n")
     if question == "Y":
         path = input("Type the folder name: ").replace("./", "")
     path = os.path.join(cwd, path)
@@ -53,7 +49,7 @@ def main():
     print("So it's settled then. Processing {}, with output to {}".format(ChosenOne, path))
     del FileList
     
-    RGSSAD.read()
+    RGSSAD.read(verbose)
     RGSSAD.DecryptFiles(path)
     print("Job's done.")
 
@@ -62,11 +58,11 @@ def create(filePath):
     data = tmp.read(8)
     size = tmp.seek(0, 2)
     tmp.close()
-    if data[0:5].decode('ASCII') == "RGSSAD":
+    if data[0:6].decode('ASCII') == "RGSSAD":
         if data[7] == 1:
             return app.RGSSADv1.RGSSADv1(filePath, size)
-#        if data[7]==3:
-#            return app.RGSSADv3.(filePath)
+        if data[7] == 3:
+            return app.RGSSADv3.RGSSADv3(filePath, size)
     raise IOError("Headers look wrong, are you sure that's valid RGSSAD?")
 
 
@@ -75,3 +71,4 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         print(str(e))
+        sys.exit()

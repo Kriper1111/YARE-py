@@ -1,4 +1,4 @@
-# Wrapper for windows
+# YARE wrapper for Windows
 
 import os
 import argparse
@@ -32,7 +32,6 @@ def main():
 def create(filePath):
     tmp = open(filePath, "rb")
     data = tmp.read(8)
-    print(data[7])
     size = tmp.seek(0, 2)
     tmp.close()
     if data[0:6].decode('ASCII') == "RGSSAD":
