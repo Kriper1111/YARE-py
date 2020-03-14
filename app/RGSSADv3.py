@@ -10,24 +10,29 @@ class RGSSADv3(RGSSAD.Base):
         self.key = int.from_bytes(self.Archive.read(4), "little")
         self.key = self.key * 9 + 3
 
-        while True:
-            print(">> It's a new cycle<<")
+        for i in range(0, 1):
+            print(">> Reading new file metadata.. <<")
+
             offset = self.DecryptNumber(self.Archive.read(4))
             size = self.DecryptNumber(self.Archive.read(4))
-            filename = self.DecryptName(self.Archive.read(4))
             key = self.DecryptNumber(self.Archive.read(4))
+
+            length = self.DecryptNumber(self.Archive.read(4))
+            filename = self.DecryptName(self.Archive.read(length))
 
             File = RGSSAD.EncryptedData(filename, offset, size, key)
             self.ArchivedData.append(File)
             self.Archive.seek(size, 1)
+            """
             print("file name " + filename)
-            print("file size " + str(size))
+            print("file size " + hex(size))
             print("offset " + hex(offset))
-            print("key " + hex(key))
+            print("key " + hex(self.key))
             print("we're at" + hex(self.Archive.tell()))
+            """
             if self.Archive.tell() == self.Size:
                 break
-        print("holy shit, we made it.")
+        # print("holy shit, we made it.")
 
     def DecryptNumber(self, number):
         number = int.from_bytes(number, "little")
@@ -36,10 +41,11 @@ class RGSSADv3(RGSSAD.Base):
 
     def DecryptName(self, encryptedName):
         decryptedName = []
-        tKey = bytes(self.key)
+        tKey = self.key.to_bytes(4, "little")
         Pos = 0
         for byte in encryptedName:
             Pos %= 4
+            print("Decrypting byte {} with key bit {}".format(hex(byte), hex(tKey[Pos])))
             decryptedName.append(byte ^ tKey[Pos])
             Pos += 1
         decryptedName = bytearray(decryptedName).decode("UTF-8")

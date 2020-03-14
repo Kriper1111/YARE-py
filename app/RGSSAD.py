@@ -1,6 +1,8 @@
 # base class for RGSSAD
 
 import os
+import platform
+
 
 def shorten(number):
     return number & 0xFFFFFFFF
@@ -55,9 +57,17 @@ class Base:
                 bKey = Tkey.to_bytes(4, "little")
                 decrypted.append(byte ^ bKey[j])
                 j += 1
-            filename = os.path.join(path+File.name.replace("\\", "/"))
-            print("Decrypted all the bytes, storing them into {}".format(filename))
-            os.makedirs(filename, exist_ok=True)
+            if platform.system() == "Linux":
+                File.name.replace("\\", "/")
+            filename = os.path.join(path, File.name)
+            OSpath = path
+            if platform.system() == "Windows":
+                folder = '\\'.join(File.name.split('\\')[:-1])
+                OSpath = os.path.join(path, folder)
+                print(OSpath)
+
+            print("Decrypted all the bytes, storing them into {}".format(path))
+            os.makedirs(OSpath, exist_ok=True)
             output = open(filename, "wb")
             output.write(bytearray(decrypted))
             output.close()
