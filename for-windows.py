@@ -1,23 +1,27 @@
 # YARE wrapper for Windows
 
-import os
+from os import path
+from pathlib import PurePath
 import argparse
 import app
 
 
 def main():
-    cwd = os.path.realpath(os.path.dirname(__file__))
+    cwd = path.realpath(path.dirname(__file__))
 
     parser = argparse.ArgumentParser(description="RGSSAD file extraxtor")
     parser.add_argument('filename', metavar='filename', type=str, nargs='+', help='Source file')
-    parser.add_argument('output', metavar='output', type=str, nargs='?', help='Output directory', default='.\\Extracted\\')
+    parser.add_argument('verbose', metavar='-v', nargs='?', action = "store_const", help = "Verbose", const="Y", default="n")
+    parser.add_argument('output', metavar='output', type=str, nargs='?', help='Output directory, default: "Extracted" subfolder', default='Extracted')
     args = parser.parse_args()
 
-    filename = args.filename[0].replace(".\\", "")
-    output = args.output.replace(".\\", "")
+    filename = args.filename[0]
+    output = args.output
 
-    inputFile = os.path.join(cwd, filename)
-    outputDir = os.path.join(cwd, output)
+    inputFile = PurePath(cwd, filename)
+    outputDir = PurePath(cwd, output)
+    verbose = args.verbose
+    print(verbose)
 
     print(inputFile)
 
