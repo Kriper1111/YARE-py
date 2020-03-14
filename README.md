@@ -1,7 +1,7 @@
 # YARE-py
-**Y**et **A**nother **R**GSSAD **E**xtractor, now in python.
+**Y**et **A**nother **R**GSSAD **E**xtractor, now in Python.
 
-I know, something like this already exists elsewhere.
+I know, something like this already exists elsewhere, but their version is messy.
 
 This repository is **Work in Progress**. That means I'm a lazy clump of moss and would update it from time to time.
 
