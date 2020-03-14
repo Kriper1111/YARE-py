@@ -1,21 +1,23 @@
-# YARE wrapper for Android
+# YARE wrapper without command line arguments
 
-import os, sys
+from os import listdir, path
+from pathlib import PurePath
+import sys
 import app
 
 def main():
-    cwd = os.path.dirname(__file__)
+    cwd = path.realpath(path.dirname(__file__))
     
     print("Searching for RGSSAD files in "+cwd)
     
     FileList = []
     Ind = 0
 
-    for File in os.listdir(cwd):
+    for File in listdir(cwd):
         if File.endswith(('.rgssad', '.rgss2a', '.rgss3a')):
             Ind += 1
             print("#{} : {}".format(Ind, File))
-            FileList.append(os.path.join(cwd, File))
+            FileList.append(PurePath(cwd, File))
 
     if not FileList:
         raise IOError("No RGSSAD files found")
@@ -40,17 +42,24 @@ def main():
     
     verbose = input("Should I go verbose? (Y/n)\r\n")
     
-    path = "Extracted"
-    question = input("One more thing: can I get the folder for extracting? Default is 'Extracted' in this folder. (Y/n)\r\n")
+    outPath = "Extracted"
+    question = input("One more thing: do you want specify extraction destination? (Y/n)\r\n")
     if question == "Y":
-        path = input("Type the folder name: ").replace("./", "")
-    path = os.path.join(cwd, path)
+        outPath = input("Type the folder name: ")
+    else:
+        input("Okay, I will put the data into 'Extracted' subfolder. Press Enter to continue or Ctrl+C to exit.")
     
-    print("So it's settled then. Processing {}, with output to {}".format(ChosenOne, path))
+    outPath = PurePath(cwd, outPath) # Ultimate solution
+
+    #time.sleep
+    #outPath = path.normpath(outPath)
+    #outPath = path.normcase(outPath) # in case of unexpected Windows
+    
+    print("So it's settled then. Processing {}, with output to {}".format(ChosenOne, outPath))
     del FileList
     
     RGSSAD.read(verbose)
-    RGSSAD.DecryptFiles(path)
+    RGSSAD.DecryptFiles(outPath)
     print("Job's done.")
 
 def create(filePath):
