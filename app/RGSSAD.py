@@ -1,7 +1,6 @@
 # base class for RGSSAD
 
 import os
-#import platform
 
 
 def shorten(number):

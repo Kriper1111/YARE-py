@@ -5,11 +5,12 @@ from pathlib import PurePath
 import sys
 import app
 
+
 def main():
     cwd = path.realpath(path.dirname(__file__))
-    
-    print("Searching for RGSSAD files in "+cwd)
-    
+
+    print("Searching for RGSSAD files in " + cwd)
+
     FileList = []
     Ind = 0
 
@@ -21,7 +22,7 @@ def main():
 
     if not FileList:
         raise IOError("No RGSSAD files found")
-    
+
     ChosenOne = input("Please choose the file from the list above or ESC to exit\r\n")
     if not ChosenOne:
         raise ValueError("I asked you nicely to choose the file")
@@ -29,7 +30,7 @@ def main():
         print("Got it, shutting down")
         sys.exit()
     try:
-        ChosenOne = int(ChosenOne)-1
+        ChosenOne = int(ChosenOne) - 1
     except ValueError:
         raise ValueError("Whatever you typed is not a number")
     if ChosenOne > len(FileList):
@@ -39,28 +40,25 @@ def main():
     ChosenOne = FileList[ChosenOne]
     RGSSAD = create(ChosenOne)
     print("Chosen One, you overcame may trials, now you may become analyzed")
-    
+
     verbose = input("Should I go verbose? (Y/n)\r\n")
-    
+
     outPath = "Extracted"
     question = input("One more thing: do you want specify extraction destination? (Y/n)\r\n")
     if question == "Y":
         outPath = input("Type the folder name: ")
     else:
         input("Okay, I will put the data into 'Extracted' subfolder. Press Enter to continue or Ctrl+C to exit.")
-    
-    outPath = PurePath(cwd, outPath) # Ultimate solution
 
-    #time.sleep
-    #outPath = path.normpath(outPath)
-    #outPath = path.normcase(outPath) # in case of unexpected Windows
-    
+    outPath = PurePath(cwd, outPath)  # Ultimate solution
+
     print("So it's settled then. Processing {}, with output to {}".format(ChosenOne, outPath))
     del FileList
-    
+
     RGSSAD.read(verbose)
     RGSSAD.DecryptFiles(outPath)
     print("Job's done.")
+
 
 def create(filePath):
     tmp = open(filePath, "rb")
