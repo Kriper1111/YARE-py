@@ -1,6 +1,6 @@
 # YARE wrapper without command line arguments
 
-from os import listdir, path
+from os import listdir, path, makedirs
 from pathlib import PurePath
 import sys
 import app
@@ -45,19 +45,30 @@ def main():
 
     outPath = "Extracted"
     question = input("One more thing: do you want specify extraction destination? (Y/n)\r\n")
-    if question == "Y":
+    if question.lower() == "y":
         outPath = input("Type the folder name: ")
     else:
         input("Okay, I will put the data into 'Extracted' subfolder. Press Enter to continue or Ctrl+C to exit.")
 
     outPath = PurePath(cwd, outPath)  # Ultimate solution
+    if not path.exists(outPath):
+        if not input("Seems like the output folder doesn't exist. Continue? (Y/n) ").lower() == "y":
+            sys.exit()
+    
+    try:
+        makedirs(outPath, exist_ok = True)
+    except OSError:
+        if input("I can't create an output directory at {}. Continue with default? (Y/n) ".format(outPath)).lower() == "y":
+            outPath = PurePath(cwd, "Exctracted")
+        else:
+            sys.exit()
 
     print("So it's settled then. Processing {}, with output to {}".format(ChosenOne, outPath))
     del FileList
 
-    RGSSAD.read(verbose)
+    RGSSAD.read(verbose.upper())  # since it's really the only version where it can be Y or y
     RGSSAD.DecryptFiles(outPath)
-    print("Job's done.")
+    print("\r\nJob's done.")
 
 
 def create(filePath):
