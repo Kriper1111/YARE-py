@@ -10,21 +10,18 @@ def main():
     cwd = path.realpath(path.dirname(__file__))
 
     parser = argparse.ArgumentParser(description="RGSSAD file extraxtor")
-    parser.add_argument('filename', metavar='filename', type=str, nargs='+', help='Source file')
-    parser.add_argument('output', metavar='output', type=str, nargs='?',
+    parser.add_argument('input', metavar='filename', type=str, nargs='+', help='Source file')
+    parser.add_argument('--output', '-o', metavar='output', type=str, nargs='?',
                         help='Output directory, default: "Extracted" subfolder', default='Extracted')
     parser.add_argument('--verbose', '-v', metavar='-v', action="store_const", const="Y", help="Verbose", default="n")
     args = parser.parse_args()
 
-    filename = args.filename[0]
+    filename = args.input[0]
     output = args.output
 
     inputFile = PurePath(cwd, filename)
     outputDir = PurePath(cwd, output)
     verbose = args.verbose
-    print(verbose)
-
-    print(inputFile)
 
     RGSSAD = create(inputFile)
 
