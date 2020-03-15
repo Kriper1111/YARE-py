@@ -11,8 +11,9 @@ def main():
 
     parser = argparse.ArgumentParser(description="RGSSAD file extraxtor")
     parser.add_argument('filename', metavar='filename', type=str, nargs='+', help='Source file')
-    parser.add_argument('verbose', metavar='-v', nargs='?', action = "store_const", help = "Verbose", const="Y", default="n")
-    parser.add_argument('output', metavar='output', type=str, nargs='?', help='Output directory, default: "Extracted" subfolder', default='Extracted')
+    parser.add_argument('output', metavar='output', type=str, nargs='?',
+                        help='Output directory, default: "Extracted" subfolder', default='Extracted')
+    parser.add_argument('--verbose', '-v', metavar='-v', action="store_const", const="Y", help="Verbose", default="n")
     args = parser.parse_args()
 
     filename = args.filename[0]
@@ -28,7 +29,7 @@ def main():
     RGSSAD = create(inputFile)
 
     print("So it's settled then. Processing {}, with output to {}".format(inputFile, outputDir))
-    RGSSAD.read()
+    RGSSAD.read(verbose)
     RGSSAD.DecryptFiles(outputDir)
     print("Job's done.")
 
