@@ -33,10 +33,10 @@ def main():
         ChosenOne = int(ChosenOne) - 1
     except ValueError:
         raise ValueError("Whatever you typed is not a number")
-    if ChosenOne > len(FileList):
-        raise ValueError("This number is too large")
-    if ChosenOne < 0:
-        raise ValueError("This number is too small")
+    if ChosenOne not in range(0, len(FileList)):
+        raise ValueError("This number is not on the list")
+    #if ChosenOne < 0:
+        #raise ValueError("This number is too small")
     ChosenOne = FileList[ChosenOne]
     RGSSAD = create(ChosenOne)
     print("Chosen One, you overcame may trials, now you may become analyzed")

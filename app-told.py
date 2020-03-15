@@ -1,9 +1,10 @@
-# YARE wrapper for Windows
+# YARE wrapper with command-line arguments
 
-from os import path
+from os import path, makedirs
 from pathlib import PurePath
 import argparse
 import app
+import sys
 
 
 def main():
@@ -13,7 +14,7 @@ def main():
     parser.add_argument('input', metavar='filename', type=str, nargs='+', help='Source file')
     parser.add_argument('--output', '-o', metavar='output', type=str, nargs='?',
                         help='Output directory, default: "Extracted" subfolder', default='Extracted')
-    parser.add_argument('--verbose', '-v', metavar='-v', action="store_const", const="Y", help="Verbose", default="n")
+    parser.add_argument('--verbose', '-v', metavar='-v', action="store_const", const="Y", help="Verbose")
     args = parser.parse_args()
 
     filename = args.input[0]
@@ -21,6 +22,18 @@ def main():
 
     inputFile = PurePath(cwd, filename)
     outputDir = PurePath(cwd, output)
+    
+    if not path.exists(inputFile):
+        raise IOError("Can't find the specified file")
+    
+    try:
+        makedirs(outputDir, exist_ok = True)
+    except OSError:
+        if input("Can't create output dir, use default? (Y/n): ").lower() == "y":
+            outputDir = PurePath(cwd, "Extracted")
+        else:
+            sys.exit()
+    
     verbose = args.verbose
 
     RGSSAD = create(inputFile)
@@ -28,7 +41,7 @@ def main():
     print("So it's settled then. Processing {}, with output to {}".format(inputFile, outputDir))
     RGSSAD.read(verbose)
     RGSSAD.DecryptFiles(outputDir)
-    print("Job's done.")
+    print("\r\nJob's done.")
 
 
 def create(filePath):
