@@ -6,7 +6,7 @@ I know, something like this already exists elsewhere, but their version is messy
 This repository is **Work in Progress**. That means I'm a lazy clump of moss and would update it from time to time.
 
 If you dare enough to use it, you would need Python 3+.
-Are there any benefits of using this over other extractors out there?
+<br>Are there any benefits of using this over other extractors out there?
 Well it worked on the archive on which others failed.
 
 **How to install**
@@ -16,13 +16,11 @@ Well it worked on the archive on which others failed.
 3. Move onto **Usage** step
 
 **How  to use**
-1. On windows, *shift-right-click* inside the folder where you unzipped the repo.
-  * click "Open command prompt" on the menu
-  * type `python for-windows.py [your_file_name] (output_folder)`. Note that we don't support reading and extracting archives to folders other than the script folder and it's subfolders.
-  * if you done everything correctly, it should output some stuff into the console and evetually finish extracting.
-2. On android (and possibly Linux), run the `for-android.py` file, it should walk you though.
-  * I suggest unzipping the repository into `qpython/projects3/` folder on your internal storage for easy access. You still would need to run it manually though. Just open the editor, navigate to the unzipped folder, open `for-android.py`.
-  * Don't forget to put your files into the same folder as the unzipped repository.
+<br>There are two versions of it: `app-prompt.py` and `app-told.py`.
+  * `app-prompt.py` is more user-friendly: you run it and it asks you for things it needs. **Keep  in mind** that it can only detect game archives that are *inside of the script folder*. I suggest using it on Android since you can't specify command-line arguments there.
+  * `app-told.py` takes options it needs from command-line arguments. Run `app-told.py -h` for some bit of help. If you don't know what are those, use `app-prompt.py`.
+<br>
+<br>
 
 
 

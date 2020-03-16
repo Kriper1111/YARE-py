@@ -11,7 +11,6 @@ class RGSSADv3(RGSSAD.Base):
         self.key = int.from_bytes(self.Archive.read(4), "little")
         self.key = self.key * 9 + 3
 
-        #for i in range(0, 1):
         while True:
             if verbose == "Y":
                 print(">> Reading new file metadata.. <<")
@@ -28,15 +27,12 @@ class RGSSADv3(RGSSAD.Base):
 
             File = RGSSAD.EncryptedData(filename, offset, size, key)
             self.ArchivedData.append(File)
-            #self.Archive.seek(size, 1)
             if verbose == "Y":
                 print("file name " + filename)
                 print("file size " + hex(size))
                 print("offset " + hex(offset))
                 print("key " + hex(self.key))
                 print("we're at " + hex(self.Archive.tell()))
-            #time.sleep(2)
-        # print("holy shit, we made it.")
 
     def DecryptNumber(self, number):
         number = int.from_bytes(number, "little")
@@ -49,8 +45,6 @@ class RGSSADv3(RGSSAD.Base):
         Pos = 0
         for byte in encryptedName:
             Pos %= 4
-            #if verbose
-            #print("Decrypting byte {} with key bit {}".format(hex(byte), hex(tKey[Pos])))
             decryptedName.append(byte ^ tKey[Pos])
             Pos += 1
         decryptedName = bytearray(decryptedName).decode("UTF-8")

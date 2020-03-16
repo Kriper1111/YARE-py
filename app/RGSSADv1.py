@@ -25,4 +25,3 @@ class RGSSADv1(RGSSAD.Base):
                 print("we're at"+hex(self.Archive.tell()))
             if self.Archive.tell() >= self.Size-1:
                 break
-        # print("holy shit, we made it.")
