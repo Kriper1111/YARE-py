@@ -1,7 +1,7 @@
 # RGSSADv3
 
 from app import RGSSAD
-import time
+
 
 class RGSSADv3(RGSSAD.Base):
     def read(self, verbose):
@@ -14,17 +14,15 @@ class RGSSADv3(RGSSAD.Base):
         while True:
             if verbose == "Y":
                 print(">> Reading new file metadata.. <<")
-
             offset = self.DecryptNumber(self.Archive.read(4))
             size = self.DecryptNumber(self.Archive.read(4))
             key = self.DecryptNumber(self.Archive.read(4))
-
+            
             if offset == 0:
                 break
-
+            
             length = self.DecryptNumber(self.Archive.read(4))
             filename = self.DecryptName(self.Archive.read(length))
-
             File = RGSSAD.EncryptedData(filename, offset, size, key)
             self.ArchivedData.append(File)
             if verbose == "Y":

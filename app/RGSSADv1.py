@@ -6,7 +6,7 @@ class RGSSADv1(RGSSAD.Base):
     def read(self, verbose):
         print("Reading v1 or v2 file with size of "+hex(self.Size))
         self.Archive.seek(8, 0)
-    
+        
         while True:
             if verbose == "Y":
                 print(">> Reading new file metadata.. <<")

@@ -45,17 +45,15 @@ class Base:
             self.Archive.seek(File.offset, 0)
             encrypted = self.Archive.read(File.size)
             print("Decoding file {}; #{} of {}".format(File.name, Index, len(self.ArchivedData)))
-            j = 0
+            i = 0
             Tkey = File.key
+            keyBits = Tkey.to_bytes(4, "little")
             for byte in encrypted:
-                j = j % 5
-                if j == 4:
-                    j = 0
-                    Tkey = (Tkey*7)+3
-                    Tkey = shorten(Tkey)
-                bKey = Tkey.to_bytes(4, "little")
-                decrypted.append(byte ^ bKey[j])
-                j += 1
+                decrypted.append(byte ^ keyBits[i])
+                if i == 3:
+                    Tkey = shorten(Tkey * 7 + 3)
+                    keyBits = Tkey.to_bytes(4, "little")
+                i = (i + 1) % 4
             OSpath = path
             if os.name == "posix":
                 File.name = File.name.replace("\\", "/")
