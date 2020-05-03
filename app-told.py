@@ -10,7 +10,7 @@ import sys
 def main():
     cwd = path.realpath(path.dirname(__file__))
 
-    parser = argparse.ArgumentParser(description="RGSSAD file extraxtor")
+    parser = argparse.ArgumentParser(description="RGSSAD file extractor")
     parser.add_argument('input', metavar='filename', type=str, nargs='+', help='Source file')
     parser.add_argument('--output', '-o', metavar='output', type=str, nargs='?',
                         help='Output directory, default: "Extracted" subfolder', default='Extracted')
